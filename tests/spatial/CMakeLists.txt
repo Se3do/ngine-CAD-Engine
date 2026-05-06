@@ -4,3 +4,4 @@ add_executable(test_spatial
 
 target_link_libraries(test_spatial PRIVATE ngine_spatial GTest::gtest_main)
 gtest_discover_tests(test_spatial)
+ngine_enable_sanitizers(test_spatial)

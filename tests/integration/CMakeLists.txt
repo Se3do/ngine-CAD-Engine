@@ -8,3 +8,4 @@ target_link_libraries(test_integration PRIVATE
     GTest::gtest_main
 )
 gtest_discover_tests(test_integration)
+ngine_enable_sanitizers(test_integration)

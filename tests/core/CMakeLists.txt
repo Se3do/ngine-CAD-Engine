@@ -6,3 +6,4 @@ add_executable(test_core
 
 target_link_libraries(test_core PRIVATE ngine_core GTest::gtest_main)
 gtest_discover_tests(test_core)
+ngine_enable_sanitizers(test_core)
