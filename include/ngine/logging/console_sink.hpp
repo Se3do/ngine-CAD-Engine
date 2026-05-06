@@ -10,7 +10,7 @@
 namespace ngine {
 
 class ConsoleSink final : public LogSink {
-public:
+   public:
     void write(LogLevel level, std::string_view category, std::string_view message,
                const std::source_location& loc) override;
 };

@@ -2,9 +2,8 @@
 #include <ngine/core/polygon.hpp>
 #include <ngine/core/transform.hpp>
 
-#include <gtest/gtest.h>
-
 #include <cmath>
+#include <gtest/gtest.h>
 #include <numbers>
 
 using namespace ngine;

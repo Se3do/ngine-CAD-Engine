@@ -7,7 +7,7 @@
 namespace ngine {
 
 class Vector2D {
-public:
+   public:
     constexpr Vector2D() noexcept = default;
     constexpr Vector2D(Real x, Real y) noexcept : x_(x), y_(y) {}
 
@@ -44,9 +44,7 @@ public:
         return {x_ - rhs.x_, y_ - rhs.y_};
     }
 
-    constexpr Vector2D operator*(Real scalar) const noexcept {
-        return {x_ * scalar, y_ * scalar};
-    }
+    constexpr Vector2D operator*(Real scalar) const noexcept { return {x_ * scalar, y_ * scalar}; }
 
     constexpr Vector2D operator-() const noexcept { return {-x_, -y_}; }
 
@@ -54,7 +52,7 @@ public:
         return nearly_equal(x_, rhs.x_) && nearly_equal(y_, rhs.y_);
     }
 
-private:
+   private:
     Real x_{0.0};
     Real y_{0.0};
 };

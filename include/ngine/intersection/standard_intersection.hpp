@@ -5,15 +5,15 @@
 namespace ngine {
 
 class StandardIntersection final : public IntersectionStrategy {
-public:
+   public:
     [[nodiscard]] IntersectionResult intersect_line_line(const Line& a,
                                                          const Line& b) const override;
     [[nodiscard]] IntersectionResult intersect_line_circle(const Line& line,
-                                                            const Circle& circle) const override;
+                                                           const Circle& circle) const override;
     [[nodiscard]] IntersectionResult intersect_circle_circle(const Circle& a,
-                                                              const Circle& b) const override;
+                                                             const Circle& b) const override;
     [[nodiscard]] IntersectionResult intersect_segment_segment(const Segment& a,
-                                                                const Segment& b) const override;
+                                                               const Segment& b) const override;
 };
 
 }  // namespace ngine

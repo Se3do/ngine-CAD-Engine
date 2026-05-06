@@ -5,7 +5,7 @@
 namespace ngine {
 
 class SequentialSolver final : public SolverStrategy {
-public:
+   public:
     [[nodiscard]] SolverResult solve(std::vector<std::shared_ptr<Constraint>>& constraints,
                                      const SolverConfig& config) override;
 

@@ -8,18 +8,16 @@ namespace ngine {
 ConstraintSystem::ConstraintSystem(std::unique_ptr<SolverStrategy> solver)
     : solver_(std::move(solver)) {}
 
-ConstraintSystem::ConstraintSystem()
-    : solver_(std::make_unique<SequentialSolver>()) {}
+ConstraintSystem::ConstraintSystem() : solver_(std::make_unique<SequentialSolver>()) {}
 
 void ConstraintSystem::add_constraint(std::shared_ptr<Constraint> constraint) {
     constraints_.push_back(std::move(constraint));
 }
 
 void ConstraintSystem::remove_constraint(EntityId id) {
-    constraints_.erase(
-        std::remove_if(constraints_.begin(), constraints_.end(),
-                       [id](const auto& c) { return c->id() == id; }),
-        constraints_.end());
+    constraints_.erase(std::remove_if(constraints_.begin(), constraints_.end(),
+                                      [id](const auto& c) { return c->id() == id; }),
+                       constraints_.end());
 }
 
 void ConstraintSystem::clear() {

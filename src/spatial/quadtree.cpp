@@ -19,7 +19,8 @@ void Quadtree::insert(EntityId id, const BoundingBox& bounds) {
 
 void Quadtree::remove(EntityId id) {
     auto it = entries_.find(id);
-    if (it == entries_.end()) return;
+    if (it == entries_.end())
+        return;
 
     entries_.erase(it);
     --size_;
@@ -89,8 +90,8 @@ void Quadtree::insert_into_node(Node& node, const Entry& entry) {
 
     node.entries.push_back(entry);
 
-    if (node.entries.size() > config_.max_objects_per_node &&
-        node.depth < config_.max_depth && node.is_leaf()) {
+    if (node.entries.size() > config_.max_objects_per_node && node.depth < config_.max_depth &&
+        node.is_leaf()) {
         subdivide(node);
 
         auto old_entries = std::move(node.entries);
@@ -129,8 +130,9 @@ void Quadtree::subdivide(Node& node) {
 }
 
 void Quadtree::query_node(const Node& node, const BoundingBox& region,
-                           std::vector<EntityId>& results) const {
-    if (!node.bounds.intersects(region)) return;
+                          std::vector<EntityId>& results) const {
+    if (!node.bounds.intersects(region))
+        return;
 
     for (const auto& entry : node.entries) {
         if (entry.bounds.intersects(region)) {
@@ -156,10 +158,14 @@ int Quadtree::get_quadrant(const Node& node, const BoundingBox& bounds) const {
     bool left = bounds.max_x() <= mid_x;
     bool right = bounds.min_x() >= mid_x;
 
-    if (top && left) return 0;
-    if (top && right) return 1;
-    if (bottom && left) return 2;
-    if (bottom && right) return 3;
+    if (top && left)
+        return 0;
+    if (top && right)
+        return 1;
+    if (bottom && left)
+        return 2;
+    if (bottom && right)
+        return 3;
 
     return -1;  // Spans multiple quadrants
 }

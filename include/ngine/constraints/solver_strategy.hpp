@@ -24,12 +24,11 @@ struct SolverResult {
 };
 
 class SolverStrategy {
-public:
+   public:
     virtual ~SolverStrategy() = default;
 
-    [[nodiscard]] virtual SolverResult solve(
-        std::vector<std::shared_ptr<Constraint>>& constraints,
-        const SolverConfig& config) = 0;
+    [[nodiscard]] virtual SolverResult solve(std::vector<std::shared_ptr<Constraint>>& constraints,
+                                             const SolverConfig& config) = 0;
 
     [[nodiscard]] virtual std::string name() const = 0;
 };

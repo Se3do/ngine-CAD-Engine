@@ -65,7 +65,8 @@ Point Polygon::centroid() const noexcept {
 
 bool Polygon::is_convex() const noexcept {
     std::size_t n = vertices_.size();
-    if (n < 3) return false;
+    if (n < 3)
+        return false;
 
     bool positive = false;
     bool negative = false;
@@ -78,9 +79,12 @@ bool Polygon::is_convex() const noexcept {
         Vector2D v2 = vertices_[j].to(vertices_[k]);
         Real cross = v1.cross(v2);
 
-        if (cross > Tolerance::absolute) positive = true;
-        if (cross < -Tolerance::absolute) negative = true;
-        if (positive && negative) return false;
+        if (cross > Tolerance::absolute)
+            positive = true;
+        if (cross < -Tolerance::absolute)
+            negative = true;
+        if (positive && negative)
+            return false;
     }
 
     return true;
@@ -119,12 +123,14 @@ bool Polygon::contains(const Point& p) const noexcept {
 }
 
 bool Polygon::is_valid() const noexcept {
-    if (vertices_.size() < 3) return false;
+    if (vertices_.size() < 3)
+        return false;
 
     // Check for duplicate consecutive vertices
     for (std::size_t i = 0; i < vertices_.size(); ++i) {
         std::size_t j = (i + 1) % vertices_.size();
-        if (vertices_[i].coincident(vertices_[j])) return false;
+        if (vertices_[i].coincident(vertices_[j]))
+            return false;
     }
 
     return true;

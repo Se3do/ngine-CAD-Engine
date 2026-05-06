@@ -7,7 +7,7 @@
 namespace ngine {
 
 class Line {
-public:
+   public:
     [[nodiscard]] static Line from_points(const Point& p1, const Point& p2);
     [[nodiscard]] static Line from_point_direction(const Point& p, const Vector2D& dir);
     [[nodiscard]] static Line from_coefficients(Real a, Real b, Real c);
@@ -30,11 +30,12 @@ public:
 
     [[nodiscard]] Point project(const Point& p) const noexcept;
     [[nodiscard]] bool contains(const Point& p, Real eps = Tolerance::absolute) const noexcept;
-    [[nodiscard]] bool is_parallel(const Line& other, Real eps = Tolerance::absolute) const noexcept;
+    [[nodiscard]] bool is_parallel(const Line& other,
+                                   Real eps = Tolerance::absolute) const noexcept;
     [[nodiscard]] bool is_perpendicular(const Line& other,
                                         Real eps = Tolerance::absolute) const noexcept;
 
-private:
+   private:
     Line(Real a, Real b, Real c) : a_(a), b_(b), c_(c), id_(IdGenerator::next()) {}
 
     Real a_{0.0};

@@ -6,7 +6,7 @@
 namespace ngine {
 
 class BoundingBox {
-public:
+   public:
     constexpr BoundingBox() noexcept = default;
     constexpr BoundingBox(Real min_x, Real min_y, Real max_x, Real max_y) noexcept
         : min_x_(min_x), min_y_(min_y), max_x_(max_x), max_y_(max_y) {}
@@ -40,7 +40,7 @@ public:
         return {min_x_ - margin, min_y_ - margin, max_x_ + margin, max_y_ + margin};
     }
 
-private:
+   private:
     Real min_x_{0.0};
     Real min_y_{0.0};
     Real max_x_{0.0};

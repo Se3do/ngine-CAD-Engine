@@ -12,14 +12,14 @@
 namespace ngine {
 
 class LogSink {
-public:
+   public:
     virtual ~LogSink() = default;
     virtual void write(LogLevel level, std::string_view category, std::string_view message,
                        const std::source_location& loc) = 0;
 };
 
 class Logger {
-public:
+   public:
     static Logger& instance();
 
     void add_sink(std::shared_ptr<LogSink> sink);
@@ -32,7 +32,7 @@ public:
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
 
-private:
+   private:
     Logger() = default;
 
     std::vector<std::shared_ptr<LogSink>> sinks_;

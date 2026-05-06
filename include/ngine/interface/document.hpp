@@ -13,7 +13,7 @@
 namespace ngine {
 
 class Document {
-public:
+   public:
     Document();
 
     EntityId add_entity(GeometryEntity entity);
@@ -29,7 +29,7 @@ public:
 
     void clear();
 
-private:
+   private:
     std::unordered_map<EntityId, GeometryEntity> entities_;
     CommandHistory history_;
     ConstraintSystem constraints_;

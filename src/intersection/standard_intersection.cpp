@@ -5,14 +5,13 @@
 
 namespace ngine {
 
-IntersectionResult StandardIntersection::intersect_line_line(const Line& a,
-                                                             const Line& b) const {
+IntersectionResult StandardIntersection::intersect_line_line(const Line& a, const Line& b) const {
     Real det = a.a() * b.b() - a.b() * b.a();
 
     if (nearly_zero(det)) {
         Real dist = std::abs(a.c() - b.c());
-        if (nearly_zero(dist) || (a.is_parallel(b) && nearly_zero(a.distance(Point(0, 0)) -
-                                                                  b.distance(Point(0, 0))))) {
+        if (nearly_zero(dist) ||
+            (a.is_parallel(b) && nearly_zero(a.distance(Point(0, 0)) - b.distance(Point(0, 0))))) {
             if (nearly_zero(a.a() * b.c() - b.a() * a.c()) &&
                 nearly_zero(a.b() * b.c() - b.b() * a.c())) {
                 return IntersectionResult::coincident();
@@ -28,7 +27,7 @@ IntersectionResult StandardIntersection::intersect_line_line(const Line& a,
 }
 
 IntersectionResult StandardIntersection::intersect_line_circle(const Line& line,
-                                                                const Circle& circle) const {
+                                                               const Circle& circle) const {
     Real dist = line.distance(circle.center());
     Real radius = circle.radius();
 
@@ -52,7 +51,7 @@ IntersectionResult StandardIntersection::intersect_line_circle(const Line& line,
 }
 
 IntersectionResult StandardIntersection::intersect_circle_circle(const Circle& a,
-                                                                  const Circle& b) const {
+                                                                 const Circle& b) const {
     Real dx = b.center().x() - a.center().x();
     Real dy = b.center().y() - a.center().y();
     Real d_sq = dx * dx + dy * dy;
@@ -98,7 +97,7 @@ IntersectionResult StandardIntersection::intersect_circle_circle(const Circle& a
 }
 
 IntersectionResult StandardIntersection::intersect_segment_segment(const Segment& a,
-                                                                    const Segment& b) const {
+                                                                   const Segment& b) const {
     Vector2D d1 = a.start().to(a.end());
     Vector2D d2 = b.start().to(b.end());
 
@@ -120,7 +119,8 @@ IntersectionResult StandardIntersection::intersect_segment_segment(const Segment
         Vector2D d4 = a.start().to(b.end());
         Real t1 = d4.dot(d1) / len_sq;
 
-        if (t0 > t1) std::swap(t0, t1);
+        if (t0 > t1)
+            std::swap(t0, t1);
 
         if (t1 < -Tolerance::absolute || t0 > 1.0 + Tolerance::absolute) {
             return IntersectionResult::none();
@@ -138,8 +138,8 @@ IntersectionResult StandardIntersection::intersect_segment_segment(const Segment
     Real t = d3.cross(d2) / cross;
     Real u = d3.cross(d1) / cross;
 
-    if (t >= -Tolerance::absolute && t <= 1.0 + Tolerance::absolute &&
-        u >= -Tolerance::absolute && u <= 1.0 + Tolerance::absolute) {
+    if (t >= -Tolerance::absolute && t <= 1.0 + Tolerance::absolute && u >= -Tolerance::absolute &&
+        u <= 1.0 + Tolerance::absolute) {
         t = std::clamp(t, 0.0, 1.0);
         return IntersectionResult::single(
             Point(a.start().x() + t * d1.x(), a.start().y() + t * d1.y()));

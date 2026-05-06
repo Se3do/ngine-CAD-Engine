@@ -9,7 +9,7 @@
 namespace ngine {
 
 class ConstraintSystem {
-public:
+   public:
     explicit ConstraintSystem(std::unique_ptr<SolverStrategy> solver);
     ConstraintSystem();
 
@@ -24,7 +24,7 @@ public:
     void set_solver(std::unique_ptr<SolverStrategy> solver);
     [[nodiscard]] const std::vector<std::shared_ptr<Constraint>>& constraints() const noexcept;
 
-private:
+   private:
     std::unique_ptr<SolverStrategy> solver_;
     std::vector<std::shared_ptr<Constraint>> constraints_;
 };

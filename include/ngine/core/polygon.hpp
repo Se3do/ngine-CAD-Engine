@@ -9,7 +9,7 @@
 namespace ngine {
 
 class Polygon {
-public:
+   public:
     explicit Polygon(std::vector<Point> vertices);
 
     [[nodiscard]] const std::vector<Point>& vertices() const noexcept { return vertices_; }
@@ -24,7 +24,7 @@ public:
     [[nodiscard]] bool contains(const Point& p) const noexcept;
     [[nodiscard]] bool is_valid() const noexcept;
 
-private:
+   private:
     std::vector<Point> vertices_;
     EntityId id_{IdGenerator::next()};
 };

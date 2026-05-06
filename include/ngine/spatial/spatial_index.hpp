@@ -9,7 +9,7 @@
 namespace ngine {
 
 class SpatialIndex {
-public:
+   public:
     virtual ~SpatialIndex() = default;
 
     virtual void insert(EntityId id, const BoundingBox& bounds) = 0;

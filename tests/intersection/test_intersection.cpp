@@ -3,15 +3,14 @@
 #include <ngine/core/segment.hpp>
 #include <ngine/intersection/intersection_engine.hpp>
 
-#include <gtest/gtest.h>
-
 #include <cmath>
+#include <gtest/gtest.h>
 #include <numbers>
 
 using namespace ngine;
 
 class IntersectionTest : public ::testing::Test {
-protected:
+   protected:
     IntersectionEngine engine;
 };
 
@@ -71,8 +70,10 @@ TEST_F(IntersectionTest, LineCircleTwoPoints) {
     bool found_neg = false, found_pos = false;
     for (const auto& p : result.points) {
         EXPECT_NEAR(p.y(), 0.0, 1e-10);
-        if (std::abs(p.x() - 5.0) < 1e-10) found_pos = true;
-        if (std::abs(p.x() + 5.0) < 1e-10) found_neg = true;
+        if (std::abs(p.x() - 5.0) < 1e-10)
+            found_pos = true;
+        if (std::abs(p.x() + 5.0) < 1e-10)
+            found_neg = true;
     }
     EXPECT_TRUE(found_neg);
     EXPECT_TRUE(found_pos);

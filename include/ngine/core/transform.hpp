@@ -9,7 +9,7 @@
 namespace ngine {
 
 class Transform {
-public:
+   public:
     [[nodiscard]] static Transform identity() noexcept;
     [[nodiscard]] static Transform translation(Real dx, Real dy) noexcept;
     [[nodiscard]] static Transform rotation(Real radians, Point center = {0, 0}) noexcept;
@@ -22,7 +22,7 @@ public:
 
     [[nodiscard]] const std::array<Real, 9>& matrix() const noexcept { return m_; }
 
-private:
+   private:
     Transform() noexcept = default;
     explicit Transform(std::array<Real, 9> m) noexcept : m_(m) {}
 

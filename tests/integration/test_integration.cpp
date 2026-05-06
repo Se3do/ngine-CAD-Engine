@@ -3,13 +3,12 @@
 #include <ngine/serialization/json_serializer.hpp>
 
 #include <gtest/gtest.h>
-
 #include <sstream>
 
 using namespace ngine;
 
 class IntegrationTest : public ::testing::Test {
-protected:
+   protected:
     std::shared_ptr<Document> doc = std::make_shared<Document>();
     CliApp app{doc};
     CommandParser parser;

@@ -15,10 +15,10 @@ struct ParsedCommand {
 };
 
 class CommandParser {
-public:
+   public:
     [[nodiscard]] std::optional<ParsedCommand> parse(std::string_view input) const;
 
-private:
+   private:
     [[nodiscard]] std::vector<std::string> tokenize(std::string_view input) const;
 };
 

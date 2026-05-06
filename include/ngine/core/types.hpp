@@ -14,8 +14,7 @@ struct Tolerance {
     static constexpr Real relative = 1e-8;
 };
 
-[[nodiscard]] inline bool nearly_equal(Real a, Real b,
-                                       Real eps = Tolerance::absolute) noexcept {
+[[nodiscard]] inline bool nearly_equal(Real a, Real b, Real eps = Tolerance::absolute) noexcept {
     return std::abs(a - b) <= eps;
 }
 
@@ -24,7 +23,7 @@ struct Tolerance {
 }
 
 class IdGenerator {
-public:
+   public:
     [[nodiscard]] static EntityId next() noexcept {
         static std::atomic<EntityId> counter{0};
         return ++counter;

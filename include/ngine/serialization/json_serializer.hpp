@@ -5,7 +5,7 @@
 namespace ngine {
 
 class JsonSerializer final : public Serializer {
-public:
+   public:
     [[nodiscard]] std::string serialize(const Document& doc) const override;
     [[nodiscard]] std::shared_ptr<Document> deserialize(std::string_view data) const override;
 

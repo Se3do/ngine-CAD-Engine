@@ -10,14 +10,13 @@
 namespace ngine {
 
 class Quadtree final : public SpatialIndex {
-public:
+   public:
     struct Config {
         BoundingBox bounds;
         std::size_t max_objects_per_node;
         std::size_t max_depth;
 
-        Config()
-            : bounds{-1000, -1000, 1000, 1000}, max_objects_per_node{8}, max_depth{8} {}
+        Config() : bounds{-1000, -1000, 1000, 1000}, max_objects_per_node{8}, max_depth{8} {}
     };
 
     explicit Quadtree(Config config = Config());
@@ -33,7 +32,7 @@ public:
     void clear() override;
     [[nodiscard]] std::size_t size() const noexcept override;
 
-private:
+   private:
     struct Entry {
         EntityId id;
         BoundingBox bounds;

@@ -3,8 +3,7 @@
 
 namespace ngine {
 
-IntersectionEngine::IntersectionEngine()
-    : strategy_(std::make_unique<StandardIntersection>()) {}
+IntersectionEngine::IntersectionEngine() : strategy_(std::make_unique<StandardIntersection>()) {}
 
 IntersectionEngine::IntersectionEngine(std::unique_ptr<IntersectionStrategy> strategy)
     : strategy_(std::move(strategy)) {}

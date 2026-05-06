@@ -1,8 +1,7 @@
 #include <ngine/serialization/json_serializer.hpp>
 
-#include <nlohmann/json.hpp>
-
 #include <fstream>
+#include <nlohmann/json.hpp>
 #include <stdexcept>
 
 namespace ngine {
@@ -43,12 +42,18 @@ json entity_to_json(EntityId id, const GeometryEntity& entity) {
     json j = std::visit(
         [](const auto& e) -> json {
             using T = std::decay_t<decltype(e)>;
-            if constexpr (std::is_same_v<T, Point>) return point_to_json(e);
-            else if constexpr (std::is_same_v<T, Line>) return line_to_json(e);
-            else if constexpr (std::is_same_v<T, Segment>) return segment_to_json(e);
-            else if constexpr (std::is_same_v<T, Circle>) return circle_to_json(e);
-            else if constexpr (std::is_same_v<T, Polygon>) return polygon_to_json(e);
-            else return {};
+            if constexpr (std::is_same_v<T, Point>)
+                return point_to_json(e);
+            else if constexpr (std::is_same_v<T, Line>)
+                return line_to_json(e);
+            else if constexpr (std::is_same_v<T, Segment>)
+                return segment_to_json(e);
+            else if constexpr (std::is_same_v<T, Circle>)
+                return circle_to_json(e);
+            else if constexpr (std::is_same_v<T, Polygon>)
+                return polygon_to_json(e);
+            else
+                return {};
         },
         entity);
     j["id"] = id;
@@ -70,8 +75,7 @@ GeometryEntity json_to_entity(const json& j) {
                        Point(j.at("x2").get<Real>(), j.at("y2").get<Real>()));
     }
     if (type == "circle") {
-        return Circle(Point(j.at("cx").get<Real>(), j.at("cy").get<Real>()),
-                      j.at("r").get<Real>());
+        return Circle(Point(j.at("cx").get<Real>(), j.at("cy").get<Real>()), j.at("r").get<Real>());
     }
     if (type == "polygon") {
         std::vector<Point> vertices;
@@ -112,8 +116,7 @@ std::shared_ptr<Document> JsonSerializer::deserialize(std::string_view data) con
     return doc;
 }
 
-void JsonSerializer::save_to_file(const Document& doc,
-                                   const std::filesystem::path& path) const {
+void JsonSerializer::save_to_file(const Document& doc, const std::filesystem::path& path) const {
     std::ofstream file(path);
     if (!file.is_open()) {
         throw std::runtime_error("Cannot open file for writing: " + path.string());
@@ -121,8 +124,7 @@ void JsonSerializer::save_to_file(const Document& doc,
     file << serialize(doc);
 }
 
-std::shared_ptr<Document> JsonSerializer::load_from_file(
-    const std::filesystem::path& path) const {
+std::shared_ptr<Document> JsonSerializer::load_from_file(const std::filesystem::path& path) const {
     std::ifstream file(path);
     if (!file.is_open()) {
         throw std::runtime_error("Cannot open file for reading: " + path.string());

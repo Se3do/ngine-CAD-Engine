@@ -9,7 +9,7 @@
 namespace ngine {
 
 class CommandHistory {
-public:
+   public:
     explicit CommandHistory(std::size_t max_depth = 100);
 
     void execute(std::unique_ptr<Command> cmd);
@@ -23,7 +23,7 @@ public:
 
     void clear();
 
-private:
+   private:
     std::deque<std::unique_ptr<Command>> undo_stack_;
     std::deque<std::unique_ptr<Command>> redo_stack_;
     std::size_t max_depth_;

@@ -2,8 +2,7 @@
 
 #include <ngine/logging/logger.hpp>
 
-#define NGINE_LOG(level, cat, msg) \
-    ::ngine::Logger::instance().log(level, cat, msg)
+#define NGINE_LOG(level, cat, msg) ::ngine::Logger::instance().log(level, cat, msg)
 
 #define NGINE_LOG_TRACE(cat, msg) NGINE_LOG(::ngine::LogLevel::Trace, cat, msg)
 #define NGINE_LOG_DEBUG(cat, msg) NGINE_LOG(::ngine::LogLevel::Debug, cat, msg)

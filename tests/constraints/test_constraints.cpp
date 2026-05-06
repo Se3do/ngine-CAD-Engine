@@ -3,7 +3,6 @@
 #include <ngine/constraints/sequential_solver.hpp>
 
 #include <gtest/gtest.h>
-
 #include <memory>
 
 using namespace ngine;

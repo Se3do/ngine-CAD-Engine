@@ -11,13 +11,13 @@
 namespace ngine {
 
 class CliApp {
-public:
+   public:
     explicit CliApp(std::shared_ptr<Document> document);
 
     void run(std::istream& input = std::cin, std::ostream& output = std::cout);
     [[nodiscard]] std::string execute_command(const ParsedCommand& cmd);
 
-private:
+   private:
     using Handler = std::function<std::string(const ParsedCommand&)>;
 
     void register_handlers();

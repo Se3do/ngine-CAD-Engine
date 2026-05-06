@@ -8,7 +8,7 @@
 namespace ngine {
 
 class Segment {
-public:
+   public:
     Segment(Point start, Point end);
 
     [[nodiscard]] const Point& start() const noexcept { return start_; }
@@ -25,7 +25,7 @@ public:
     [[nodiscard]] Real distance_to(const Point& p) const noexcept;
     [[nodiscard]] Point closest_point(const Point& p) const noexcept;
 
-private:
+   private:
     Point start_;
     Point end_;
     EntityId id_{IdGenerator::next()};

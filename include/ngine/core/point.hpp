@@ -8,7 +8,7 @@
 namespace ngine {
 
 class Point {
-public:
+   public:
     Point() noexcept = default;
     Point(Real x, Real y) noexcept : x_(x), y_(y), id_(IdGenerator::next()) {}
 
@@ -45,15 +45,13 @@ public:
     }
 
     [[nodiscard]] bool coincident(const Point& other,
-                                    Real eps = Tolerance::absolute) const noexcept {
+                                  Real eps = Tolerance::absolute) const noexcept {
         return distance_squared_to(other) <= eps * eps;
     }
 
-    [[nodiscard]] bool operator==(const Point& rhs) const noexcept {
-        return coincident(rhs);
-    }
+    [[nodiscard]] bool operator==(const Point& rhs) const noexcept { return coincident(rhs); }
 
-private:
+   private:
     Real x_{0.0};
     Real y_{0.0};
     EntityId id_{0};

@@ -11,7 +11,7 @@
 namespace ngine {
 
 class IntersectionEngine {
-public:
+   public:
     IntersectionEngine();
     explicit IntersectionEngine(std::unique_ptr<IntersectionStrategy> strategy);
 
@@ -22,7 +22,7 @@ public:
     [[nodiscard]] IntersectionResult intersect(const Circle& a, const Circle& b) const;
     [[nodiscard]] IntersectionResult intersect(const Segment& a, const Segment& b) const;
 
-private:
+   private:
     std::unique_ptr<IntersectionStrategy> strategy_;
 };
 

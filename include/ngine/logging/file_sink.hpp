@@ -10,14 +10,14 @@
 namespace ngine {
 
 class FileSink final : public LogSink {
-public:
+   public:
     explicit FileSink(const std::filesystem::path& path);
     ~FileSink() override;
 
     void write(LogLevel level, std::string_view category, std::string_view message,
                const std::source_location& loc) override;
 
-private:
+   private:
     std::ofstream file_;
 };
 

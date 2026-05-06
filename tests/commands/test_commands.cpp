@@ -7,7 +7,7 @@
 using namespace ngine;
 
 class CommandTest : public ::testing::Test {
-protected:
+   protected:
     std::shared_ptr<Document> doc = std::make_shared<Document>();
 };
 
@@ -50,8 +50,7 @@ TEST_F(CommandTest, HistoryDepth) {
     EntityId id = doc->add_entity(Point(0.0, 0.0));
 
     for (int i = 0; i < 5; ++i) {
-        history.execute(
-            std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
+        history.execute(std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
     }
 
     EXPECT_EQ(history.undo_depth(), 3u);
@@ -61,15 +60,12 @@ TEST_F(CommandTest, RedoClearedOnNewCommand) {
     auto get_fn = [this](EntityId eid) -> GeometryEntity* { return doc->get_entity(eid); };
     EntityId id = doc->add_entity(Point(0.0, 0.0));
 
-    doc->history().execute(
-        std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
-    doc->history().execute(
-        std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
+    doc->history().execute(std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
+    doc->history().execute(std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
 
     doc->history().undo();
     EXPECT_TRUE(doc->history().can_redo());
 
-    doc->history().execute(
-        std::make_unique<MoveCommand>(id, Vector2D(0.0, 1.0), get_fn));
+    doc->history().execute(std::make_unique<MoveCommand>(id, Vector2D(0.0, 1.0), get_fn));
     EXPECT_FALSE(doc->history().can_redo());
 }

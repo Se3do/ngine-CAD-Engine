@@ -1,10 +1,9 @@
-#include <ngine/interface/cli/cli_app.hpp>
-
 #include <ngine/commands/geometry_commands.hpp>
 #include <ngine/core/circle.hpp>
 #include <ngine/core/line.hpp>
 #include <ngine/core/point.hpp>
 #include <ngine/core/segment.hpp>
+#include <ngine/interface/cli/cli_app.hpp>
 
 #include <format>
 #include <sstream>
@@ -19,9 +18,7 @@ CliApp::CliApp(std::shared_ptr<Document> document) : document_(std::move(documen
 void CliApp::register_handlers() {
     handlers_["CREATE_POINT"] = [this](const ParsedCommand& c) { return handle_create_point(c); };
     handlers_["CREATE_LINE"] = [this](const ParsedCommand& c) { return handle_create_line(c); };
-    handlers_["CREATE_CIRCLE"] = [this](const ParsedCommand& c) {
-        return handle_create_circle(c);
-    };
+    handlers_["CREATE_CIRCLE"] = [this](const ParsedCommand& c) { return handle_create_circle(c); };
     handlers_["CREATE_SEGMENT"] = [this](const ParsedCommand& c) {
         return handle_create_segment(c);
     };
@@ -195,12 +192,18 @@ std::string CliApp::handle_list(const ParsedCommand& /*cmd*/) {
         std::string type_name = std::visit(
             [](const auto& e) -> std::string {
                 using T = std::decay_t<decltype(e)>;
-                if constexpr (std::is_same_v<T, Point>) return "Point";
-                else if constexpr (std::is_same_v<T, Line>) return "Line";
-                else if constexpr (std::is_same_v<T, Segment>) return "Segment";
-                else if constexpr (std::is_same_v<T, Circle>) return "Circle";
-                else if constexpr (std::is_same_v<T, Polygon>) return "Polygon";
-                else return "Unknown";
+                if constexpr (std::is_same_v<T, Point>)
+                    return "Point";
+                else if constexpr (std::is_same_v<T, Line>)
+                    return "Line";
+                else if constexpr (std::is_same_v<T, Segment>)
+                    return "Segment";
+                else if constexpr (std::is_same_v<T, Circle>)
+                    return "Circle";
+                else if constexpr (std::is_same_v<T, Polygon>)
+                    return "Polygon";
+                else
+                    return "Unknown";
             },
             *entity);
         oss << std::format("\n  #{}: {}", id, type_name);

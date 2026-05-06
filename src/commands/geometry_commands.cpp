@@ -59,7 +59,9 @@ std::string CreateCommand::description() const {
 
 DeleteCommand::DeleteCommand(EntityId id, GetEntityFn get_fn, AddEntityFn add_fn,
                              RemoveEntityFn remove_fn)
-    : id_(id), get_fn_(std::move(get_fn)), add_fn_(std::move(add_fn)),
+    : id_(id),
+      get_fn_(std::move(get_fn)),
+      add_fn_(std::move(add_fn)),
       remove_fn_(std::move(remove_fn)) {}
 
 void DeleteCommand::execute() {

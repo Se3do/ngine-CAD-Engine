@@ -6,7 +6,7 @@
 namespace ngine {
 
 class Circle {
-public:
+   public:
     Circle(Point center, Real radius);
 
     [[nodiscard]] const Point& center() const noexcept { return center_; }
@@ -23,7 +23,7 @@ public:
     void set_center(const Point& center) noexcept { center_ = center; }
     void set_radius(Real radius);
 
-private:
+   private:
     Point center_;
     Real radius_;
     EntityId id_{IdGenerator::next()};

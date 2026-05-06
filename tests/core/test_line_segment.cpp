@@ -1,9 +1,8 @@
 #include <ngine/core/line.hpp>
 #include <ngine/core/segment.hpp>
 
-#include <gtest/gtest.h>
-
 #include <cmath>
+#include <gtest/gtest.h>
 #include <numbers>
 
 using namespace ngine;
@@ -27,7 +26,8 @@ TEST(LineTest, CoincidentPointsThrows) {
 }
 
 TEST(LineTest, ZeroDirectionThrows) {
-    EXPECT_THROW((void)Line::from_point_direction(Point(0, 0), Vector2D(0, 0)), std::invalid_argument);
+    EXPECT_THROW((void)Line::from_point_direction(Point(0, 0), Vector2D(0, 0)),
+                 std::invalid_argument);
 }
 
 TEST(LineTest, SignedDistance) {

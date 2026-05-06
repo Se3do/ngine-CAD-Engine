@@ -16,7 +16,7 @@ enum class ConstraintStatus : std::uint8_t {
 };
 
 class Constraint {
-public:
+   public:
     virtual ~Constraint() = default;
 
     [[nodiscard]] virtual ConstraintStatus evaluate() const = 0;
@@ -28,7 +28,7 @@ public:
 
     [[nodiscard]] EntityId id() const noexcept { return id_; }
 
-protected:
+   protected:
     EntityId id_{IdGenerator::next()};
 };
 

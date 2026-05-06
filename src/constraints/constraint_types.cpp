@@ -65,8 +65,7 @@ void ParallelConstraint::apply_correction(Real /*step_size*/) {
 
 // --- PerpendicularConstraint ---
 
-PerpendicularConstraint::PerpendicularConstraint(std::shared_ptr<Line> l1,
-                                                  std::shared_ptr<Line> l2)
+PerpendicularConstraint::PerpendicularConstraint(std::shared_ptr<Line> l1, std::shared_ptr<Line> l2)
     : l1_(std::move(l1)), l2_(std::move(l2)) {
     if (!l1_ || !l2_) {
         throw std::invalid_argument("PerpendicularConstraint requires non-null lines");
@@ -93,7 +92,7 @@ void PerpendicularConstraint::apply_correction(Real /*step_size*/) {
 // --- FixedDistanceConstraint ---
 
 FixedDistanceConstraint::FixedDistanceConstraint(std::shared_ptr<Point> p1,
-                                                  std::shared_ptr<Point> p2, Real distance)
+                                                 std::shared_ptr<Point> p2, Real distance)
     : p1_(std::move(p1)), p2_(std::move(p2)), target_distance_(distance) {
     if (!p1_ || !p2_) {
         throw std::invalid_argument("FixedDistanceConstraint requires non-null points");
@@ -105,7 +104,7 @@ FixedDistanceConstraint::FixedDistanceConstraint(std::shared_ptr<Point> p1,
 
 ConstraintStatus FixedDistanceConstraint::evaluate() const {
     return nearly_equal(p1_->distance_to(*p2_), target_distance_) ? ConstraintStatus::Satisfied
-                                                                   : ConstraintStatus::Violated;
+                                                                  : ConstraintStatus::Violated;
 }
 
 Real FixedDistanceConstraint::error() const {
@@ -135,7 +134,7 @@ void FixedDistanceConstraint::apply_correction(Real step_size) {
 // --- PointOnLineConstraint ---
 
 PointOnLineConstraint::PointOnLineConstraint(std::shared_ptr<Point> point,
-                                              std::shared_ptr<Line> line)
+                                             std::shared_ptr<Line> line)
     : point_(std::move(point)), line_(std::move(line)) {
     if (!point_ || !line_) {
         throw std::invalid_argument("PointOnLineConstraint requires non-null point and line");

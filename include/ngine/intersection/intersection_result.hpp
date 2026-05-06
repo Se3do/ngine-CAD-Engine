@@ -7,21 +7,13 @@
 
 namespace ngine {
 
-enum class IntersectionType : std::uint8_t {
-    None,
-    Point,
-    TwoPoints,
-    Segment,
-    Coincident
-};
+enum class IntersectionType : std::uint8_t { None, Point, TwoPoints, Segment, Coincident };
 
 struct IntersectionResult {
     IntersectionType type{IntersectionType::None};
     std::vector<Point> points;
 
-    [[nodiscard]] bool has_intersection() const noexcept {
-        return type != IntersectionType::None;
-    }
+    [[nodiscard]] bool has_intersection() const noexcept { return type != IntersectionType::None; }
 
     [[nodiscard]] std::size_t count() const noexcept { return points.size(); }
 
