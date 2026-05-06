@@ -235,20 +235,21 @@ std::string CliApp::handle_list(const ParsedCommand& /*cmd*/) {
         std::string type_name = std::visit(
             [](const auto& e) -> std::string {
                 using T = std::decay_t<decltype(e)>;
-                if constexpr (std::is_same_v<T, Point>)
+                if constexpr (std::is_same_v<T, Point>) {
                     return "Point";
-                else if constexpr (std::is_same_v<T, Line>)
+                } else if constexpr (std::is_same_v<T, Line>) {
                     return "Line";
-                else if constexpr (std::is_same_v<T, Segment>)
+                } else if constexpr (std::is_same_v<T, Segment>) {
                     return "Segment";
-                else if constexpr (std::is_same_v<T, Circle>)
+                } else if constexpr (std::is_same_v<T, Circle>) {
                     return "Circle";
-                else if constexpr (std::is_same_v<T, Polygon>)
+                } else if constexpr (std::is_same_v<T, Polygon>) {
                     return "Polygon";
-                else if constexpr (std::is_same_v<T, Arc>)
+                } else if constexpr (std::is_same_v<T, Arc>) {
                     return "Arc";
-                else
+                } else {
                     return "Unknown";
+                }
             },
             *entity);
         oss << std::format("\n  #{}: {}", id, type_name);

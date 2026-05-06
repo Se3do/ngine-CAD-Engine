@@ -119,8 +119,9 @@ IntersectionResult StandardIntersection::intersect_segment_segment(const Segment
         Vector2D d4 = a.start().to(b.end());
         Real t1 = d4.dot(d1) / len_sq;
 
-        if (t0 > t1)
+        if (t0 > t1) {
             std::swap(t0, t1);
+        }
 
         if (t1 < -Tolerance::absolute || t0 > 1.0 + Tolerance::absolute) {
             return IntersectionResult::none();
@@ -240,4 +241,3 @@ IntersectionResult StandardIntersection::intersect_arc_arc(const Arc& a, const A
 }
 
 }  // namespace ngine
-

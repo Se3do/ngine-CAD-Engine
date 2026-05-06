@@ -13,7 +13,7 @@ class Arc {
    public:
     /// Construct an arc. Angles in radians, counter-clockwise.
     /// start_angle and end_angle are normalized to [0, 2π).
-    Arc(Point center, Real radius, Real start_angle, Real end_angle);
+    Arc(const Point& center, Real radius, Real start_angle, Real end_angle);
 
     [[nodiscard]] const Point& center() const noexcept { return center_; }
     [[nodiscard]] Real radius() const noexcept { return radius_; }

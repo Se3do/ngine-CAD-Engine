@@ -10,20 +10,20 @@ namespace ngine {
 
 namespace {
 
-constexpr Real kTwoPi = 2.0 * std::numbers::pi;
+constexpr Real two_pi = 2.0 * std::numbers::pi;
 
 }  // namespace
 
 Real Arc::normalize_angle(Real angle) noexcept {
-    angle = std::fmod(angle, kTwoPi);
+    angle = std::fmod(angle, two_pi);
     if (angle < 0.0) {
-        angle += kTwoPi;
+        angle += two_pi;
     }
     return angle;
 }
 
-Arc::Arc(Point center, Real radius, Real start_angle, Real end_angle)
-    : center_(std::move(center)),
+Arc::Arc(const Point& center, Real radius, Real start_angle, Real end_angle)
+    : center_(center),
       radius_(radius),
       start_angle_(normalize_angle(start_angle)),
       end_angle_(normalize_angle(end_angle)) {
@@ -35,7 +35,7 @@ Arc::Arc(Point center, Real radius, Real start_angle, Real end_angle)
 Real Arc::sweep_angle() const noexcept {
     Real sweep = end_angle_ - start_angle_;
     if (sweep <= 0.0) {
-        sweep += kTwoPi;
+        sweep += two_pi;
     }
     return sweep;
 }

@@ -51,20 +51,21 @@ json entity_to_json(EntityId id, const GeometryEntity& entity) {
     json j = std::visit(
         [](const auto& e) -> json {
             using T = std::decay_t<decltype(e)>;
-            if constexpr (std::is_same_v<T, Point>)
+            if constexpr (std::is_same_v<T, Point>) {
                 return point_to_json(e);
-            else if constexpr (std::is_same_v<T, Line>)
+            } else if constexpr (std::is_same_v<T, Line>) {
                 return line_to_json(e);
-            else if constexpr (std::is_same_v<T, Segment>)
+            } else if constexpr (std::is_same_v<T, Segment>) {
                 return segment_to_json(e);
-            else if constexpr (std::is_same_v<T, Circle>)
+            } else if constexpr (std::is_same_v<T, Circle>) {
                 return circle_to_json(e);
-            else if constexpr (std::is_same_v<T, Polygon>)
+            } else if constexpr (std::is_same_v<T, Polygon>) {
                 return polygon_to_json(e);
-            else if constexpr (std::is_same_v<T, Arc>)
+            } else if constexpr (std::is_same_v<T, Arc>) {
                 return arc_to_json(e);
-            else
+            } else {
                 return {};
+            }
         },
         entity);
     j["id"] = id;
