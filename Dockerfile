@@ -1,0 +1,38 @@
+FROM ubuntu:24.04 AS dev
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    ninja-build \
+    git \
+    clang-18 \
+    clang-tidy-18 \
+    clang-format-18 \
+    lldb-18 \
+    lld-18 \
+    libc++-18-dev \
+    libc++abi-18-dev \
+    python3 \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100 \
+    && update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-18 100 \
+    && update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-18 100
+
+ENV CC=clang
+ENV CXX=clang++
+
+WORKDIR /workspace
+COPY . .
+
+RUN cmake --preset debug && cmake --build build/debug
+
+FROM dev AS test
+RUN cd build/debug && ctest --output-on-failure
+
+FROM ubuntu:24.04 AS runtime
+COPY --from=dev /workspace/build/debug/apps/ngine_cli /usr/local/bin/ngine
+ENTRYPOINT ["ngine"]

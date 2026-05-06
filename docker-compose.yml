@@ -1,0 +1,68 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/workspace
+      - build_cache:/workspace/build
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/workspace
+      - build_cache:/workspace/build
+    working_dir: /workspace
+    command: >
+      bash -c "cmake --preset debug && cmake --build build/debug"
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/workspace
+      - build_cache:/workspace/build
+    working_dir: /workspace
+    command: >
+      bash -c "cmake --preset debug && cmake --build build/debug && ctest --test-dir build/debug --output-on-failure"
+
+  sanitize:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/workspace
+      - build_cache:/workspace/build
+    working_dir: /workspace
+    command: >
+      bash -c "cmake --preset sanitize && cmake --build build/sanitize && ctest --test-dir build/sanitize --output-on-failure"
+
+  format-check:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: >
+      bash -c "find include src apps tests -name '*.hpp' -o -name '*.cpp' | xargs clang-format --dry-run --Werror"
+
+  tidy:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/workspace
+      - build_cache:/workspace/build
+    working_dir: /workspace
+    command: >
+      bash -c "cmake --preset clang-tidy && cmake --build build/clang-tidy"
+
+volumes:
+  build_cache:
