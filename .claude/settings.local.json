@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(cmake *)",
+      "PowerShell(Test-Path *)",
+      "PowerShell($cmakePath = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\Common7\\\\IDE\\\\CommonExtensions\\\\Microsoft\\\\CMake\\\\CMake\\\\bin\\\\cmake.exe\"; cd \"D:\\\\Coding Stuff\\\\vs code\\\\ngine\"; & $cmakePath -B build/debug -G \"Visual Studio 17 2022\" -DNGINE_BUILD_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 2>&1 | Select-Object -Last 50)",
+      "PowerShell($cmakePath = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\Common7\\\\IDE\\\\CommonExtensions\\\\Microsoft\\\\CMake\\\\CMake\\\\bin\\\\cmake.exe\"; cd \"D:\\\\Coding Stuff\\\\vs code\\\\ngine\"; & $cmakePath -B build/debug -G \"Visual Studio 17 2022\" -DNGINE_BUILD_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 2>&1 | Select-Object -Last 60)",
+      "PowerShell($cmakePath = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\Common7\\\\IDE\\\\CommonExtensions\\\\Microsoft\\\\CMake\\\\CMake\\\\bin\\\\cmake.exe\"; cd \"D:\\\\Coding Stuff\\\\vs code\\\\ngine\"; & $cmakePath --build build/debug --config Debug 2>&1 | Select-Object -Last 80)",
+      "PowerShell($cmakePath = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\Common7\\\\IDE\\\\CommonExtensions\\\\Microsoft\\\\CMake\\\\CMake\\\\bin\\\\cmake.exe\"; cd \"D:\\\\Coding Stuff\\\\vs code\\\\ngine\"; & $cmakePath --build build/debug --config Debug 2>&1 | Select-Object -Last 60)",
+      "PowerShell($cmakePath = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\Common7\\\\IDE\\\\CommonExtensions\\\\Microsoft\\\\CMake\\\\CMake\\\\bin\\\\cmake.exe\"; cd \"D:\\\\Coding Stuff\\\\vs code\\\\ngine\"; & $cmakePath -E chdir build/debug ctest --build-config Debug --output-on-failure 2>&1)",
+      "PowerShell($ctestPath = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\Common7\\\\IDE\\\\CommonExtensions\\\\Microsoft\\\\CMake\\\\CMake\\\\bin\\\\ctest.exe\"; cd \"D:\\\\Coding Stuff\\\\vs code\\\\ngine\\\\build\\\\debug\"; & $ctestPath --build-config Debug --output-on-failure 2>&1)"
+    ]
+  }
+}
