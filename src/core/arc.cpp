@@ -108,9 +108,9 @@ BoundingBox Arc::bounding_box() const noexcept {
         }
     };
 
-    check_angle(0.0, center_.x() + radius_, center_.y());                        // right
-    check_angle(std::numbers::pi / 2.0, center_.x(), center_.y() + radius_);     // top
-    check_angle(std::numbers::pi, center_.x() - radius_, center_.y());           // left
+    check_angle(0.0, center_.x() + radius_, center_.y());                           // right
+    check_angle(std::numbers::pi / 2.0, center_.x(), center_.y() + radius_);        // top
+    check_angle(std::numbers::pi, center_.x() - radius_, center_.y());              // left
     check_angle(3.0 * std::numbers::pi / 2.0, center_.x(), center_.y() - radius_);  // bottom
 
     return BoundingBox(min_x, min_y, max_x, max_y);

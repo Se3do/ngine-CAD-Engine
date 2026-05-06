@@ -1,9 +1,8 @@
 #include <ngine/core/arc.hpp>
 #include <ngine/spatial/bounding_box.hpp>
 
-#include <gtest/gtest.h>
-
 #include <cmath>
+#include <gtest/gtest.h>
 #include <numbers>
 #include <stdexcept>
 

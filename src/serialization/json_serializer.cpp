@@ -1,12 +1,30 @@
+#include <ngine/commands/geometry_commands.hpp>
+#include <ngine/core/arc.hpp>
+#include <ngine/core/circle.hpp>
+#include <ngine/core/line.hpp>
+#include <ngine/core/point.hpp>
+#include <ngine/core/polygon.hpp>
+#include <ngine/core/segment.hpp>
+#include <ngine/core/types.hpp>
+#include <ngine/interface/document.hpp>
 #include <ngine/serialization/json_serializer.hpp>
 
+#include <filesystem>
 #include <fstream>
+#include <iterator>
+#include <memory>
 #include <nlohmann/json.hpp>
 #include <stdexcept>
+#include <string>
+#include <string_view>
+#include <type_traits>
+#include <utility>
+#include <variant>
+#include <vector>
 
 namespace ngine {
 
-using json = nlohmann::json;
+using json = nlohmann::json;  // NOLINT(misc-include-cleaner)
 
 namespace {
 
@@ -39,12 +57,10 @@ json polygon_to_json(const Polygon& p) {
 }
 
 json arc_to_json(const Arc& a) {
-    return {{"type", "arc"},
-            {"cx", a.center().x()},
-            {"cy", a.center().y()},
-            {"r", a.radius()},
-            {"start_angle", a.start_angle()},
-            {"end_angle", a.end_angle()}};
+    return {
+        {"type", "arc"},   {"cx", a.center().x()},           {"cy", a.center().y()},
+        {"r", a.radius()}, {"start_angle", a.start_angle()}, {"end_angle", a.end_angle()},
+    };
 }
 
 json entity_to_json(EntityId id, const GeometryEntity& entity) {
@@ -68,12 +84,12 @@ json entity_to_json(EntityId id, const GeometryEntity& entity) {
             }
         },
         entity);
-    j["id"] = id;
+    j.emplace("id", id);
     return j;
 }
 
 GeometryEntity json_to_entity(const json& j) {
-    std::string type = j.at("type").get<std::string>();
+    const std::string type = j.at("type").get<std::string>();
 
     if (type == "point") {
         return Point(j.at("x").get<Real>(), j.at("y").get<Real>());
@@ -108,13 +124,13 @@ GeometryEntity json_to_entity(const json& j) {
 
 std::string JsonSerializer::serialize(const Document& doc) const {
     json root;
-    root["version"] = "1.0";
-    root["entities"] = json::array();
+    root.emplace("version", "1.0");
+    root.emplace("entities", json::array());
 
-    for (EntityId id : doc.all_entity_ids()) {
+    for (const EntityId id : doc.all_entity_ids()) {
         const auto* entity = doc.get_entity(id);
-        if (entity) {
-            root["entities"].push_back(entity_to_json(id, *entity));
+        if (entity != nullptr) {
+            root.at("entities").push_back(entity_to_json(id, *entity));
         }
     }
 
@@ -122,7 +138,7 @@ std::string JsonSerializer::serialize(const Document& doc) const {
 }
 
 std::shared_ptr<Document> JsonSerializer::deserialize(std::string_view data) const {
-    auto doc = std::make_shared<Document>();
+    const auto doc = std::make_shared<Document>();
     json root = json::parse(data);
 
     for (const auto& entity_json : root.at("entities")) {
@@ -145,7 +161,8 @@ std::shared_ptr<Document> JsonSerializer::load_from_file(const std::filesystem::
     if (!file.is_open()) {
         throw std::runtime_error("Cannot open file for reading: " + path.string());
     }
-    std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    const std::string content((std::istreambuf_iterator<char>(file)),
+                              std::istreambuf_iterator<char>());
     return deserialize(content);
 }
 

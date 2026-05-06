@@ -1,10 +1,15 @@
 #include <ngine/commands/command_history.hpp>
 #include <ngine/commands/geometry_commands.hpp>
+#include <ngine/core/types.hpp>
 #include <ngine/interface/document.hpp>
 
 #include <gtest/gtest.h>
+#include <memory>
+#include <utility>
 
 using namespace ngine;
+
+namespace {
 
 class CommandTest : public ::testing::Test {
    protected:
@@ -19,7 +24,7 @@ TEST_F(CommandTest, UndoRedoEmpty) {
 }
 
 TEST_F(CommandTest, MoveUndoRedo) {
-    EntityId id = doc->add_entity(Point(0.0, 0.0));
+    const EntityId id = doc->add_entity(Point(0.0, 0.0));
 
     auto get_fn = [this](EntityId eid) -> GeometryEntity* { return doc->get_entity(eid); };
     auto cmd = std::make_unique<MoveCommand>(id, Vector2D(5.0, 3.0), get_fn);
@@ -47,18 +52,18 @@ TEST_F(CommandTest, HistoryDepth) {
     CommandHistory history(3);
 
     auto get_fn = [this](EntityId eid) -> GeometryEntity* { return doc->get_entity(eid); };
-    EntityId id = doc->add_entity(Point(0.0, 0.0));
+    const EntityId id = doc->add_entity(Point(0.0, 0.0));
 
     for (int i = 0; i < 5; ++i) {
         history.execute(std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
     }
 
-    EXPECT_EQ(history.undo_depth(), 3u);
+    EXPECT_EQ(history.undo_depth(), 3U);
 }
 
 TEST_F(CommandTest, RedoClearedOnNewCommand) {
     auto get_fn = [this](EntityId eid) -> GeometryEntity* { return doc->get_entity(eid); };
-    EntityId id = doc->add_entity(Point(0.0, 0.0));
+    const EntityId id = doc->add_entity(Point(0.0, 0.0));
 
     doc->history().execute(std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
     doc->history().execute(std::make_unique<MoveCommand>(id, Vector2D(1.0, 0.0), get_fn));
@@ -69,3 +74,5 @@ TEST_F(CommandTest, RedoClearedOnNewCommand) {
     doc->history().execute(std::make_unique<MoveCommand>(id, Vector2D(0.0, 1.0), get_fn));
     EXPECT_FALSE(doc->history().can_redo());
 }
+
+}  // namespace

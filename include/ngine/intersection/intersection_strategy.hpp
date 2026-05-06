@@ -23,7 +23,7 @@ class IntersectionStrategy {
     [[nodiscard]] virtual IntersectionResult intersect_line_arc(const Line& line,
                                                                 const Arc& arc) const = 0;
     [[nodiscard]] virtual IntersectionResult intersect_circle_arc(const Circle& circle,
-                                                                   const Arc& arc) const = 0;
+                                                                  const Arc& arc) const = 0;
     [[nodiscard]] virtual IntersectionResult intersect_arc_arc(const Arc& a,
                                                                const Arc& b) const = 0;
 };

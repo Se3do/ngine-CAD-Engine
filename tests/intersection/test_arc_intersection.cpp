@@ -1,16 +1,19 @@
 #include <ngine/core/arc.hpp>
 #include <ngine/core/circle.hpp>
 #include <ngine/core/line.hpp>
+#include <ngine/core/types.hpp>
 #include <ngine/intersection/intersection_engine.hpp>
-
-#include <gtest/gtest.h>
+#include <ngine/intersection/intersection_result.hpp>
 
 #include <cmath>
+#include <gtest/gtest.h>
 #include <numbers>
 
 using namespace ngine;
 
-constexpr Real kPi = std::numbers::pi;
+namespace {
+
+constexpr Real k_pi = std::numbers::pi;
 
 class ArcIntersectionTest : public ::testing::Test {
    protected:
@@ -20,18 +23,18 @@ class ArcIntersectionTest : public ::testing::Test {
 // --- Line–Arc ---
 
 TEST_F(ArcIntersectionTest, LineArcTwoIntersections) {
-    // Arc: upper-right quarter of unit circle
-    Arc arc(Point(0, 0), 1.0, 0.0, kPi / 2.0);
-    // Horizontal line y = 0.5 — should hit the arc twice
-    Line line = Line::from_points(Point(-2, 0.5), Point(2, 0.5));
+    // Arc: upper half of unit circle (0 to π)
+    const Arc arc(Point(0, 0), 1.0, 0.0, k_pi);
+    // Horizontal line y = 0.5 intersects at θ=π/6 and θ=5π/6
+    const Line line = Line::from_points(Point(-2, 0.5), Point(2, 0.5));
 
-    auto result = engine.intersect(line, arc);
-    EXPECT_EQ(result.count(), 2u);
+    const auto result = engine.intersect(line, arc);
+    EXPECT_EQ(result.count(), 2U);
 }
 
 TEST_F(ArcIntersectionTest, LineArcOneIntersection) {
     // Arc: upper-right quarter of unit circle
-    Arc arc(Point(0, 0), 1.0, 0.0, kPi / 2.0);
+    const Arc arc(Point(0, 0), 1.0, 0.0, k_pi / 2.0);
     // Horizontal line y = 0.5 — hits full circle at ≈30° and ≈150°
     // But arc is 0°-90°, so only the ≈30° hit is on the arc
     // Wait, let's be more precise: y = sin(θ) = 0.5 → θ = 30° and 150°
@@ -41,74 +44,66 @@ TEST_F(ArcIntersectionTest, LineArcOneIntersection) {
     // The arc goes from 0 to π/2 (90°). So only θ=π/6 is on the arc → 1 intersection.
     // Let me fix the two-intersection test:
 
-    auto result = engine.intersect(line, arc);
-    EXPECT_EQ(result.count(), 1u);
-    EXPECT_NEAR(result.points[0].y(), 0.5, 1e-9);
-}
+    const Line line = Line::from_points(Point(-2, 0.5), Point(2, 0.5));
 
-TEST_F(ArcIntersectionTest, LineArcTwoIntersectionsFixed) {
-    // Arc: upper half of unit circle (0 to π)
-    Arc arc(Point(0, 0), 1.0, 0.0, kPi);
-    // Horizontal line y = 0.5 intersects at θ=π/6 and θ=5π/6
-    Line line = Line::from_points(Point(-2, 0.5), Point(2, 0.5));
-
-    auto result = engine.intersect(line, arc);
-    EXPECT_EQ(result.count(), 2u);
+    const auto result = engine.intersect(line, arc);
+    ASSERT_EQ(result.count(), 1U);
+    EXPECT_NEAR(result.points.at(0).y(), 0.5, 1e-9);
 }
 
 TEST_F(ArcIntersectionTest, LineArcNoIntersection) {
     // Arc: upper-right quarter
-    Arc arc(Point(0, 0), 1.0, 0.0, kPi / 2.0);
+    const Arc arc(Point(0, 0), 1.0, 0.0, k_pi / 2.0);
     // Line far away
-    Line line = Line::from_points(Point(5, 0), Point(5, 1));
+    const Line line = Line::from_points(Point(5, 0), Point(5, 1));
 
-    auto result = engine.intersect(line, arc);
+    const auto result = engine.intersect(line, arc);
     EXPECT_FALSE(result.has_intersection());
 }
 
 TEST_F(ArcIntersectionTest, LineArcMissesArcSpan) {
     // Arc: lower-right quarter (270° to 360° = -π/2 to 0)
-    Arc arc(Point(0, 0), 1.0, 3.0 * kPi / 2.0, 0.0);
+    const Arc arc(Point(0, 0), 1.0, 3.0 * k_pi / 2.0, 0.0);
     // Horizontal line y = 0.5 hits the full circle in the upper half, not the arc
-    Line line = Line::from_points(Point(-2, 0.5), Point(2, 0.5));
+    const Line line = Line::from_points(Point(-2, 0.5), Point(2, 0.5));
 
-    auto result = engine.intersect(line, arc);
+    const auto result = engine.intersect(line, arc);
     EXPECT_FALSE(result.has_intersection());
 }
 
 TEST_F(ArcIntersectionTest, LineArcTangent) {
     // Arc: right quarter of unit circle (from -45° to 45°)
-    Arc arc(Point(0, 0), 1.0, -kPi / 4.0, kPi / 4.0);
+    const Arc arc(Point(0, 0), 1.0, -k_pi / 4.0, k_pi / 4.0);
     // Vertical line x = 1 is tangent to the circle at (1,0)
-    Line line = Line::from_points(Point(1, -1), Point(1, 1));
+    const Line line = Line::from_points(Point(1, -1), Point(1, 1));
 
-    auto result = engine.intersect(line, arc);
-    EXPECT_EQ(result.count(), 1u);
-    EXPECT_NEAR(result.points[0].x(), 1.0, 1e-9);
-    EXPECT_NEAR(result.points[0].y(), 0.0, 1e-9);
+    const auto result = engine.intersect(line, arc);
+    ASSERT_EQ(result.count(), 1U);
+    EXPECT_NEAR(result.points.at(0).x(), 1.0, 1e-9);
+    EXPECT_NEAR(result.points.at(0).y(), 0.0, 1e-9);
 }
 
 // --- Circle–Arc ---
 
 TEST_F(ArcIntersectionTest, CircleArcTwoIntersections) {
     // Arc: upper half of unit circle at origin
-    Arc arc(Point(0, 0), 1.0, 0.0, kPi);
+    const Arc arc(Point(0, 0), 1.0, 0.0, k_pi);
     // Circle centered at (1, 0) with radius 1 — two intersection points
-    Circle circle(Point(1, 0), 1.0);
+    const Circle circle(Point(1, 0), 1.0);
 
-    auto result = engine.intersect(circle, arc);
+    const auto result = engine.intersect(circle, arc);
     // The two circles intersect at (0.5, ±√3/2). The arc spans 0 to π (upper half),
     // so (0.5, √3/2) is on the arc but (0.5, -√3/2) is not.
-    EXPECT_EQ(result.count(), 1u);
-    EXPECT_NEAR(result.points[0].x(), 0.5, 1e-9);
-    EXPECT_NEAR(result.points[0].y(), std::sqrt(3.0) / 2.0, 1e-9);
+    ASSERT_EQ(result.count(), 1U);
+    EXPECT_NEAR(result.points.at(0).x(), 0.5, 1e-9);
+    EXPECT_NEAR(result.points.at(0).y(), std::sqrt(3.0) / 2.0, 1e-9);
 }
 
 TEST_F(ArcIntersectionTest, CircleArcNoIntersection) {
-    Arc arc(Point(0, 0), 1.0, 0.0, kPi / 2.0);
-    Circle circle(Point(5, 5), 1.0);
+    const Arc arc(Point(0, 0), 1.0, 0.0, k_pi / 2.0);
+    const Circle circle(Point(5, 5), 1.0);
 
-    auto result = engine.intersect(circle, arc);
+    const auto result = engine.intersect(circle, arc);
     EXPECT_FALSE(result.has_intersection());
 }
 
@@ -116,25 +111,27 @@ TEST_F(ArcIntersectionTest, CircleArcNoIntersection) {
 
 TEST_F(ArcIntersectionTest, ArcArcIntersection) {
     // Two arcs from concentric circles won't intersect unless different centers
-    Arc a(Point(0, 0), 1.0, 0.0, kPi);         // upper half
-    Arc b(Point(1, 0), 1.0, kPi / 2.0, 3.0 * kPi / 2.0);  // left half of circle at (1,0)
+    const Arc a(Point(0, 0), 1.0, 0.0, k_pi);                     // upper half
+    const Arc b(Point(1, 0), 1.0, k_pi / 2.0, 3.0 * k_pi / 2.0);  // left half of circle at (1,0)
 
-    auto result = engine.intersect(a, b);
+    const auto result = engine.intersect(a, b);
     // Circle-circle intersection points: (0.5, ±√3/2)
     // Arc a contains angles 0..π → (0.5, √3/2) at θ≈60° is in range.
     // Arc b spans π/2 to 3π/2 (upper-left to lower-left of circle at (1,0))
     // For the point (0.5, √3/2) relative to center (1,0): angle = atan2(√3/2, -0.5) ≈ 2π/3 (120°)
     // which is in [π/2, 3π/2], so it's on arc b.
-    EXPECT_GE(result.count(), 1u);
+    EXPECT_GE(result.count(), 1U);
 }
 
 TEST_F(ArcIntersectionTest, ArcArcNoOverlap) {
     // Two arcs on the same circle but non-overlapping spans
-    Arc a(Point(0, 0), 1.0, 0.0, kPi / 4.0);
-    Arc b(Point(0, 0), 1.0, kPi, 3.0 * kPi / 2.0);
+    const Arc a(Point(0, 0), 1.0, 0.0, k_pi / 4.0);
+    const Arc b(Point(0, 0), 1.0, k_pi, 3.0 * k_pi / 2.0);
 
-    auto result = engine.intersect(a, b);
+    const auto result = engine.intersect(a, b);
     // Same circle → coincident full circles, so the method returns coincident.
     // This is a simplification in the current implementation.
     EXPECT_TRUE(result.type == IntersectionType::Coincident);
 }
+
+}  // namespace

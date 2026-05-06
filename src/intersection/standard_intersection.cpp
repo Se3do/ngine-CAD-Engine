@@ -150,7 +150,7 @@ IntersectionResult StandardIntersection::intersect_segment_segment(const Segment
 }
 
 IntersectionResult StandardIntersection::intersect_line_arc(const Line& line,
-                                                             const Arc& arc) const {
+                                                            const Arc& arc) const {
     // Compute line-circle intersection, then filter points to those on the arc
     Circle full_circle(arc.center(), arc.radius());
     IntersectionResult circle_result = intersect_line_circle(line, full_circle);
@@ -176,7 +176,7 @@ IntersectionResult StandardIntersection::intersect_line_arc(const Line& line,
 }
 
 IntersectionResult StandardIntersection::intersect_circle_arc(const Circle& circle,
-                                                               const Arc& arc) const {
+                                                              const Arc& arc) const {
     // Compute circle-circle intersection, then filter points to those on the arc
     Circle arc_circle(arc.center(), arc.radius());
     IntersectionResult cc_result = intersect_circle_circle(circle, arc_circle);
