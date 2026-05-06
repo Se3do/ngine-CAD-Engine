@@ -1,4 +1,5 @@
 #include <ngine/commands/geometry_commands.hpp>
+#include <ngine/core/arc.hpp>
 #include <ngine/core/circle.hpp>
 #include <ngine/core/line.hpp>
 #include <ngine/core/point.hpp>
@@ -22,6 +23,7 @@ void CliApp::register_handlers() {
     handlers_["CREATE_SEGMENT"] = [this](const ParsedCommand& c) {
         return handle_create_segment(c);
     };
+    handlers_["CREATE_ARC"] = [this](const ParsedCommand& c) { return handle_create_arc(c); };
     handlers_["INTERSECT"] = [this](const ParsedCommand& c) { return handle_intersect(c); };
     handlers_["LIST"] = [this](const ParsedCommand& c) { return handle_list(c); };
     handlers_["DELETE"] = [this](const ParsedCommand& c) { return handle_delete(c); };
@@ -117,6 +119,21 @@ std::string CliApp::handle_create_segment(const ParsedCommand& cmd) {
     return std::format("OK: Created segment #{}", id);
 }
 
+std::string CliApp::handle_create_arc(const ParsedCommand& cmd) {
+    if (cmd.arguments.size() < 5) {
+        return "ERROR: CREATE_ARC requires cx cy radius start_angle end_angle";
+    }
+    Real cx = std::stod(cmd.arguments[0]);
+    Real cy = std::stod(cmd.arguments[1]);
+    Real r = std::stod(cmd.arguments[2]);
+    Real sa = std::stod(cmd.arguments[3]);
+    Real ea = std::stod(cmd.arguments[4]);
+
+    EntityId id = document_->add_entity(Arc(Point(cx, cy), r, sa, ea));
+    return std::format("OK: Created arc #{} center ({},{}) radius {} angles [{},{}]", id, cx, cy, r,
+                       sa, ea);
+}
+
 std::string CliApp::handle_intersect(const ParsedCommand& cmd) {
     if (cmd.arguments.size() < 2) {
         return "ERROR: INTERSECT requires two entity IDs";
@@ -157,6 +174,32 @@ std::string CliApp::handle_intersect(const ParsedCommand& cmd) {
         if (auto* s1 = std::get_if<Segment>(e1)) {
             if (auto* s2 = std::get_if<Segment>(e2)) {
                 result = engine.intersect(*s1, *s2);
+                return true;
+            }
+        }
+        if (auto* a1 = std::get_if<Arc>(e1)) {
+            if (auto* l2 = std::get_if<Line>(e2)) {
+                result = engine.intersect(*l2, *a1);
+                return true;
+            }
+            if (auto* c2 = std::get_if<Circle>(e2)) {
+                result = engine.intersect(*c2, *a1);
+                return true;
+            }
+            if (auto* a2 = std::get_if<Arc>(e2)) {
+                result = engine.intersect(*a1, *a2);
+                return true;
+            }
+        }
+        if (auto* l1 = std::get_if<Line>(e1)) {
+            if (auto* a2 = std::get_if<Arc>(e2)) {
+                result = engine.intersect(*l1, *a2);
+                return true;
+            }
+        }
+        if (auto* c1_2 = std::get_if<Circle>(e1)) {
+            if (auto* a2 = std::get_if<Arc>(e2)) {
+                result = engine.intersect(*c1_2, *a2);
                 return true;
             }
         }
@@ -202,6 +245,8 @@ std::string CliApp::handle_list(const ParsedCommand& /*cmd*/) {
                     return "Circle";
                 else if constexpr (std::is_same_v<T, Polygon>)
                     return "Polygon";
+                else if constexpr (std::is_same_v<T, Arc>)
+                    return "Arc";
                 else
                     return "Unknown";
             },
@@ -273,6 +318,7 @@ std::string CliApp::handle_help(const ParsedCommand& /*cmd*/) {
            "  CREATE_LINE x1 y1 x2 y2\n"
            "  CREATE_CIRCLE cx cy radius\n"
            "  CREATE_SEGMENT x1 y1 x2 y2\n"
+           "  CREATE_ARC cx cy radius start_angle end_angle\n"
            "  INTERSECT id1 id2\n"
            "  LIST\n"
            "  DELETE id\n"

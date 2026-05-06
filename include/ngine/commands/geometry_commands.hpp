@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ngine/commands/command.hpp>
+#include <ngine/core/arc.hpp>
 #include <ngine/core/circle.hpp>
 #include <ngine/core/line.hpp>
 #include <ngine/core/point.hpp>
@@ -15,7 +16,7 @@
 
 namespace ngine {
 
-using GeometryEntity = std::variant<Point, Line, Segment, Circle, Polygon>;
+using GeometryEntity = std::variant<Point, Line, Segment, Circle, Polygon, Arc>;
 
 using AddEntityFn = std::function<EntityId(GeometryEntity)>;
 using RemoveEntityFn = std::function<void(EntityId)>;

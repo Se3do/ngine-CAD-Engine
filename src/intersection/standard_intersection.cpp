@@ -148,4 +148,96 @@ IntersectionResult StandardIntersection::intersect_segment_segment(const Segment
     return IntersectionResult::none();
 }
 
+IntersectionResult StandardIntersection::intersect_line_arc(const Line& line,
+                                                             const Arc& arc) const {
+    // Compute line-circle intersection, then filter points to those on the arc
+    Circle full_circle(arc.center(), arc.radius());
+    IntersectionResult circle_result = intersect_line_circle(line, full_circle);
+
+    if (circle_result.type == IntersectionType::None) {
+        return IntersectionResult::none();
+    }
+
+    std::vector<Point> on_arc;
+    for (const auto& p : circle_result.points) {
+        if (arc.contains(p)) {
+            on_arc.push_back(p);
+        }
+    }
+
+    if (on_arc.empty()) {
+        return IntersectionResult::none();
+    }
+    if (on_arc.size() == 1) {
+        return IntersectionResult::single(on_arc[0]);
+    }
+    return IntersectionResult::two(on_arc[0], on_arc[1]);
+}
+
+IntersectionResult StandardIntersection::intersect_circle_arc(const Circle& circle,
+                                                               const Arc& arc) const {
+    // Compute circle-circle intersection, then filter points to those on the arc
+    Circle arc_circle(arc.center(), arc.radius());
+    IntersectionResult cc_result = intersect_circle_circle(circle, arc_circle);
+
+    if (cc_result.type == IntersectionType::None) {
+        return IntersectionResult::none();
+    }
+
+    if (cc_result.type == IntersectionType::Coincident) {
+        // The full circles are coincident — the intersection is the arc itself
+        // We can't represent a continuous arc segment in IntersectionResult,
+        // so return coincident to indicate overlap.
+        return IntersectionResult::coincident();
+    }
+
+    std::vector<Point> on_arc;
+    for (const auto& p : cc_result.points) {
+        if (arc.contains(p)) {
+            on_arc.push_back(p);
+        }
+    }
+
+    if (on_arc.empty()) {
+        return IntersectionResult::none();
+    }
+    if (on_arc.size() == 1) {
+        return IntersectionResult::single(on_arc[0]);
+    }
+    return IntersectionResult::two(on_arc[0], on_arc[1]);
+}
+
+IntersectionResult StandardIntersection::intersect_arc_arc(const Arc& a, const Arc& b) const {
+    // Compute circle-circle intersection, then filter points to those on both arcs
+    Circle ca(a.center(), a.radius());
+    Circle cb(b.center(), b.radius());
+    IntersectionResult cc_result = intersect_circle_circle(ca, cb);
+
+    if (cc_result.type == IntersectionType::None) {
+        return IntersectionResult::none();
+    }
+
+    if (cc_result.type == IntersectionType::Coincident) {
+        // Full circles are coincident — check if the arc spans overlap
+        // Simplified: return coincident (overlap detection is complex)
+        return IntersectionResult::coincident();
+    }
+
+    std::vector<Point> on_both;
+    for (const auto& p : cc_result.points) {
+        if (a.contains(p) && b.contains(p)) {
+            on_both.push_back(p);
+        }
+    }
+
+    if (on_both.empty()) {
+        return IntersectionResult::none();
+    }
+    if (on_both.size() == 1) {
+        return IntersectionResult::single(on_both[0]);
+    }
+    return IntersectionResult::two(on_both[0], on_both[1]);
+}
+
 }  // namespace ngine
+

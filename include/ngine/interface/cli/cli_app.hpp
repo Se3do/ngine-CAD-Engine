@@ -26,6 +26,7 @@ class CliApp {
     std::string handle_create_line(const ParsedCommand& cmd);
     std::string handle_create_circle(const ParsedCommand& cmd);
     std::string handle_create_segment(const ParsedCommand& cmd);
+    std::string handle_create_arc(const ParsedCommand& cmd);
     std::string handle_intersect(const ParsedCommand& cmd);
     std::string handle_list(const ParsedCommand& cmd);
     std::string handle_delete(const ParsedCommand& cmd);

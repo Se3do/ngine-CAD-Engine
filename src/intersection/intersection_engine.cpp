@@ -28,4 +28,16 @@ IntersectionResult IntersectionEngine::intersect(const Segment& a, const Segment
     return strategy_->intersect_segment_segment(a, b);
 }
 
+IntersectionResult IntersectionEngine::intersect(const Line& line, const Arc& arc) const {
+    return strategy_->intersect_line_arc(line, arc);
+}
+
+IntersectionResult IntersectionEngine::intersect(const Circle& circle, const Arc& arc) const {
+    return strategy_->intersect_circle_arc(circle, arc);
+}
+
+IntersectionResult IntersectionEngine::intersect(const Arc& a, const Arc& b) const {
+    return strategy_->intersect_arc_arc(a, b);
+}
+
 }  // namespace ngine

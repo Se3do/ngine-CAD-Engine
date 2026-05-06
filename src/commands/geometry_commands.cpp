@@ -16,6 +16,9 @@ void apply_move_to_entity(GeometryEntity* entity, const Vector2D& offset) {
             } else if constexpr (std::is_same_v<T, Circle>) {
                 Point new_center(e.center().x() + offset.x(), e.center().y() + offset.y());
                 e.set_center(new_center);
+            } else if constexpr (std::is_same_v<T, Arc>) {
+                Point new_center(e.center().x() + offset.x(), e.center().y() + offset.y());
+                e.set_center(new_center);
             }
         },
         *entity);
@@ -29,6 +32,9 @@ void apply_transform_to_entity(GeometryEntity* entity, const Transform& t) {
                 Point result = t.apply(e);
                 e.set_position(result.x(), result.y());
             } else if constexpr (std::is_same_v<T, Circle>) {
+                Point new_center = t.apply(e.center());
+                e.set_center(new_center);
+            } else if constexpr (std::is_same_v<T, Arc>) {
                 Point new_center = t.apply(e.center());
                 e.set_center(new_center);
             }

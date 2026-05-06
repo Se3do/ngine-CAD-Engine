@@ -14,6 +14,12 @@ class StandardIntersection final : public IntersectionStrategy {
                                                              const Circle& b) const override;
     [[nodiscard]] IntersectionResult intersect_segment_segment(const Segment& a,
                                                                const Segment& b) const override;
+    [[nodiscard]] IntersectionResult intersect_line_arc(const Line& line,
+                                                        const Arc& arc) const override;
+    [[nodiscard]] IntersectionResult intersect_circle_arc(const Circle& circle,
+                                                           const Arc& arc) const override;
+    [[nodiscard]] IntersectionResult intersect_arc_arc(const Arc& a,
+                                                       const Arc& b) const override;
 };
 
 }  // namespace ngine

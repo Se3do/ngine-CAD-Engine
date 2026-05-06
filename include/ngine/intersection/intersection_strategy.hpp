@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ngine/core/arc.hpp>
 #include <ngine/core/circle.hpp>
 #include <ngine/core/line.hpp>
 #include <ngine/core/segment.hpp>
@@ -19,6 +20,12 @@ class IntersectionStrategy {
                                                                      const Circle& b) const = 0;
     [[nodiscard]] virtual IntersectionResult intersect_segment_segment(const Segment& a,
                                                                        const Segment& b) const = 0;
+    [[nodiscard]] virtual IntersectionResult intersect_line_arc(const Line& line,
+                                                                const Arc& arc) const = 0;
+    [[nodiscard]] virtual IntersectionResult intersect_circle_arc(const Circle& circle,
+                                                                   const Arc& arc) const = 0;
+    [[nodiscard]] virtual IntersectionResult intersect_arc_arc(const Arc& a,
+                                                               const Arc& b) const = 0;
 };
 
 }  // namespace ngine

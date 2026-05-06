@@ -1,4 +1,5 @@
 add_library(ngine_core
+    arc.cpp
     line.cpp
     segment.cpp
     circle.cpp

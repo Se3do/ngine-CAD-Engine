@@ -38,6 +38,15 @@ json polygon_to_json(const Polygon& p) {
     return {{"type", "polygon"}, {"vertices", vertices}};
 }
 
+json arc_to_json(const Arc& a) {
+    return {{"type", "arc"},
+            {"cx", a.center().x()},
+            {"cy", a.center().y()},
+            {"r", a.radius()},
+            {"start_angle", a.start_angle()},
+            {"end_angle", a.end_angle()}};
+}
+
 json entity_to_json(EntityId id, const GeometryEntity& entity) {
     json j = std::visit(
         [](const auto& e) -> json {
@@ -52,6 +61,8 @@ json entity_to_json(EntityId id, const GeometryEntity& entity) {
                 return circle_to_json(e);
             else if constexpr (std::is_same_v<T, Polygon>)
                 return polygon_to_json(e);
+            else if constexpr (std::is_same_v<T, Arc>)
+                return arc_to_json(e);
             else
                 return {};
         },
@@ -83,6 +94,10 @@ GeometryEntity json_to_entity(const json& j) {
             vertices.emplace_back(v.at("x").get<Real>(), v.at("y").get<Real>());
         }
         return Polygon(std::move(vertices));
+    }
+    if (type == "arc") {
+        return Arc(Point(j.at("cx").get<Real>(), j.at("cy").get<Real>()), j.at("r").get<Real>(),
+                   j.at("start_angle").get<Real>(), j.at("end_angle").get<Real>());
     }
 
     throw std::runtime_error("Unknown entity type: " + type);

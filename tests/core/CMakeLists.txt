@@ -1,4 +1,5 @@
 add_executable(test_core
+    test_arc.cpp
     test_point_vector.cpp
     test_line_segment.cpp
     test_shapes_transform.cpp
